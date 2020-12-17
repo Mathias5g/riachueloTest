@@ -1,6 +1,6 @@
 import React from 'react';
 import {StatusBar} from 'react-native';
-import Channels from './pages/Channels';
+import Favourite from './pages/Favourite';
 
 const App = () => {
   return (
@@ -10,7 +10,7 @@ const App = () => {
         hidden={false}
         backgroundColor="#000000"
       />
-      <Channels />
+      <Favourite />
     </>
   );
 };

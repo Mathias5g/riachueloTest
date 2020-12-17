@@ -18,27 +18,27 @@ const DATA = [
       'https://exame.com/wp-content/uploads/2016/09/size_960_16_9_era-do-gelo.jpg',
     url: 'http://',
     title: 'Era do gelo',
-    favourite: false,
+    favourite: true,
   },
   {
     id: '2',
     image:
       'https://exame.com/wp-content/uploads/2016/09/size_960_16_9_era-do-gelo.jpg',
     url: 'http://',
-    title: 'Era do gelo',
+    title: 'Esqueceram e mim',
     favourite: false,
   },
   {
-    id: '2',
+    id: '3',
     image:
       'https://exame.com/wp-content/uploads/2016/09/size_960_16_9_era-do-gelo.jpg',
     url: 'http://',
-    title: 'Era do gelo',
-    favourite: false,
+    title: 'Queen',
+    favourite: true,
   },
 ];
 
-const Channels = () => {
+const Favourite = () => {
   const renderItem = ({item}) => (
     <Items title={item.title} favourite={item.favourite} />
   );
@@ -46,11 +46,8 @@ const Channels = () => {
   return (
     <View style={styles.container}>
       <Menu />
-      <View style={styles.search}>
-        <TextInput style={styles.inputSearch} placeholder="Channels" />
-        <TouchableOpacity style={styles.buttonSearch}>
-          <Icon name="search" size={40} color="#ffffff" />
-        </TouchableOpacity>
+      <View style={styles.favorites}>
+        <Text style={styles.favoriteTitle}>My Favourites</Text>
       </View>
       <FlatList
         data={DATA}
@@ -65,35 +62,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  item: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 18,
-    marginBottom: 20,
-  },
-  itemImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 5,
-  },
-  itemTitle: {
-    flex: 1,
-    fontWeight: '500',
-    fontSize: 16,
-    marginHorizontal: 18,
-  },
-  search: {
+  favorites: {
     flexDirection: 'row',
     paddingHorizontal: 16,
     marginVertical: 26,
   },
-  inputSearch: {
-    height: 40,
-    flex: 1,
-    backgroundColor: '#EBEBEB',
-    borderRadius: 4,
-    marginRight: 18,
-    paddingLeft: 12,
+  favoriteTitle: {
+    fontWeight: '500',
+    fontSize: 24,
   },
   buttonSearch: {
     width: 40,
@@ -105,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Channels;
+export default Favourite;

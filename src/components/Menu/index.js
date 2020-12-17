@@ -1,19 +1,29 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/EvilIcons';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const Menu = () => {
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
         <View style={styles.iconContainer}>
-          <Icon name="user" size={40} color="#000000" />
+          <FontAwesomeIcon name="user-circle-o" size={40} color="#000000" />
         </View>
         <Text style={styles.username}>Username</Text>
       </View>
       <View style={styles.actionButtons}>
-        <Icon name="star" size={40} color="#ffffff" />
-        <Icon name="close" size={40} color="#ffffff" />
+        <FontAwesomeIcon
+          style={styles.actionButtonsIcon}
+          name="star-o"
+          size={24}
+          color="#ffffff"
+        />
+        <FontAwesomeIcon
+          style={styles.actionButtonsIcon}
+          name="sign-out"
+          size={24}
+          color="#ffffff"
+        />
       </View>
     </View>
   );
@@ -51,6 +61,9 @@ const styles = StyleSheet.create({
   actionButtons: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  actionButtonsIcon: {
+    margin: 10,
   },
 });
 
