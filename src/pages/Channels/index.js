@@ -2,12 +2,11 @@ import React from 'react';
 import {
   View,
   TextInput,
-  Text,
   TouchableOpacity,
-  Image,
   FlatList,
   StyleSheet,
 } from 'react-native';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Menu from '../../components/Menu';
 import Items from '../../components/Items';
 
@@ -29,7 +28,7 @@ const DATA = [
     favourite: false,
   },
   {
-    id: '2',
+    id: '3',
     image:
       'https://exame.com/wp-content/uploads/2016/09/size_960_16_9_era-do-gelo.jpg',
     url: 'http://',
@@ -38,18 +37,18 @@ const DATA = [
   },
 ];
 
-const Channels = () => {
+const Channels = ({navigation}) => {
   const renderItem = ({item}) => (
     <Items title={item.title} favourite={item.favourite} />
   );
 
   return (
     <View style={styles.container}>
-      <Menu />
+      <Menu navigation={navigation} buttonFavourite={true} />
       <View style={styles.search}>
         <TextInput style={styles.inputSearch} placeholder="Channels" />
         <TouchableOpacity style={styles.buttonSearch}>
-          <Icon name="search" size={40} color="#ffffff" />
+          <FontAwesomeIcon name="search" size={24} color="#ffffff" />
         </TouchableOpacity>
       </View>
       <FlatList

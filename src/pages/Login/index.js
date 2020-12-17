@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-const Login = () => {
+const Login = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View>
@@ -11,7 +11,9 @@ const Login = () => {
         <Text style={styles.title}>Welcome to the jungle</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('channels')}>
           <Text style={styles.buttonTitle}>Sign In</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>

@@ -38,14 +38,14 @@ const DATA = [
   },
 ];
 
-const Favourite = () => {
+const Favourites = ({navigation}) => {
   const renderItem = ({item}) => (
     <Items title={item.title} favourite={item.favourite} />
   );
 
   return (
     <View style={styles.container}>
-      <Menu />
+      <Menu navigation={navigation} buttonFavourite={false} />
       <View style={styles.favorites}>
         <Text style={styles.favoriteTitle}>My Favourites</Text>
       </View>
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Favourite;
+export default Favourites;

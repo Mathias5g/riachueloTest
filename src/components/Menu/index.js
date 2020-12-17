@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
-const Menu = () => {
+const Menu = ({buttonFavourite, navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
@@ -12,18 +12,24 @@ const Menu = () => {
         <Text style={styles.username}>Username</Text>
       </View>
       <View style={styles.actionButtons}>
-        <FontAwesomeIcon
-          style={styles.actionButtonsIcon}
-          name="star-o"
-          size={24}
-          color="#ffffff"
-        />
-        <FontAwesomeIcon
-          style={styles.actionButtonsIcon}
-          name="sign-out"
-          size={24}
-          color="#ffffff"
-        />
+        {buttonFavourite && (
+          <TouchableOpacity onPress={() => navigation.navigate('favourites')}>
+            <FontAwesomeIcon
+              style={styles.actionButtonsIcon}
+              name="star-o"
+              size={24}
+              color="#ffffff"
+            />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity>
+          <FontAwesomeIcon
+            style={styles.actionButtonsIcon}
+            name="sign-out"
+            size={24}
+            color="#ffffff"
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
