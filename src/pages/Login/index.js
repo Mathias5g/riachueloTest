@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import React from 'react';
+import {View, Image, Text, StyleSheet} from 'react-native';
 import ModalLogin from './ModalLogin';
 
 const Login = ({navigation}) => {
@@ -12,7 +12,11 @@ const Login = ({navigation}) => {
         <Text style={styles.title}>Welcome to the jungle</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <ModalLogin titleModal="Welcome" titleButton="Sign In" />
+        <ModalLogin
+          titleModal="Welcome"
+          titleButton="Sign In"
+          navigation={navigation}
+        />
         <ModalLogin titleModal="Create new user" titleButton="Sign Up" />
       </View>
     </View>

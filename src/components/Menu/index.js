@@ -13,7 +13,7 @@ const Menu = ({buttonFavourite, navigation}) => {
       </View>
       <View style={styles.actionButtons}>
         {buttonFavourite && (
-          <TouchableOpacity onPress={() => navigation.navigate('favourites')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Favourites')}>
             <FontAwesomeIcon
               style={styles.actionButtonsIcon}
               name="star-o"
