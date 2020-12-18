@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import ModalLogin from './ModalLogin';
 
 const Login = ({navigation}) => {
   return (
@@ -11,14 +12,8 @@ const Login = ({navigation}) => {
         <Text style={styles.title}>Welcome to the jungle</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('channels')}>
-          <Text style={styles.buttonTitle}>Sign In</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonTitle}>Sign Up</Text>
-        </TouchableOpacity>
+        <ModalLogin titleModal="Welcome" titleButton="Sign In" />
+        <ModalLogin titleModal="Create new user" titleButton="Sign Up" />
       </View>
     </View>
   );
@@ -50,21 +45,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  button: {
-    width: 280,
-    height: 60,
-    marginBottom: 20,
-    backgroundColor: '#ffffff',
-    color: '#000000',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
-  buttonTitle: {
-    color: '#000000',
-    fontWeight: '500',
-    fontSize: 20,
   },
 });
 
