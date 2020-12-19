@@ -5,30 +5,33 @@ import Login from './pages/Login';
 import Channels from './pages/Channels';
 import Favourites from './pages/Favourites';
 
-import {_getToken} from './api/Auth';
-
 const Stack = createStackNavigator();
+const AuthStack = createStackNavigator();
+
+const AuthStackScreen = () => (
+  <AuthStack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Screen name="Login" component={Login} />
+  </AuthStack.Navigator>
+);
+
+const ChannelsStack = createStackNavigator();
+const ChannelsStackScreen = () => (
+  <ChannelsStack.Navigator screenOptions={{headerShown: false}}>
+    <ChannelsStack.Screen name="Channels" component={Channels} />;
+  </ChannelsStack.Navigator>
+);
+
+const FavouritesStack = createStackNavigator();
+const FavouritesStackScreen = () => (
+  <FavouritesStack.Navigator screenOptions={{headerShown: false}}>
+    <FavouritesStack.Screen name="Favourites" component={Favourites} />
+  </FavouritesStack.Navigator>
+);
 
 export default function Routes() {
-  const [hasToken, setHasToken] = useState();
-
-  useEffect(() => {
-    const retrieveData = async () => {
-      let token = await _getToken('@AppTest:useToken');
-      setHasToken(token);
-    };
-    retrieveData();
-  }, []);
-
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName={hasToken ? 'Channels' : 'Login'}
-        headerMode="none">
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Channels" component={Channels} />
-        <Stack.Screen name="Favourites" component={Favourites} />
-      </Stack.Navigator>
+      <AuthStackScreen />
     </NavigationContainer>
   );
 }
