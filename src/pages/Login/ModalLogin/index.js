@@ -12,7 +12,7 @@ import {
   TextInput,
 } from 'react-native';
 
-import {saveToken} from '../../../api/Auth';
+import {_saveToken} from '../../../api/Auth';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default class ModalLogin extends Component {
@@ -48,7 +48,7 @@ export default class ModalLogin extends Component {
       return false;
     }
 
-    await saveToken(this.state.username);
+    await _saveToken(true);
 
     this.props.navigation.dispatch(StackActions.replace('Channels'));
   };
