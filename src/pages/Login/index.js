@@ -17,7 +17,11 @@ const Login = ({navigation}) => {
           titleButton="Sign In"
           navigation={navigation}
         />
-        <ModalLogin titleModal="Create new user" titleButton="Sign Up" />
+        <ModalLogin
+          titleModal="Create new user"
+          titleButton="Sign Up"
+          navigation={navigation}
+        />
       </View>
     </View>
   );

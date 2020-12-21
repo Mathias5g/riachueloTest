@@ -1,8 +1,4 @@
-/* Esse arquivo foi feito com componente de
-  classe para desmonstrar o entedimento */
-
-import React, {Component} from 'react';
-import {StackActions} from '@react-navigation/native';
+import React, {useState} from 'react';
 import {
   Modal,
   StyleSheet,
@@ -11,103 +7,79 @@ import {
   View,
   TextInput,
 } from 'react-native';
-
-import {_saveToken} from '../../../api/Auth';
+import {AuthContext} from '../../../config/Context';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-export default class ModalLogin extends Component {
-  state = {
-    modalVisible: false,
-    username: '',
-    password: '',
-  };
+const ModalLogin = (props) => {
+  const {signIn} = React.useContext(AuthContext);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
 
-  data = {username: 'mathias', password: '123'};
+  const data = {username: 'mathias', password: '123'};
 
-  setModalVisible = (modalVisible) => {
-    this.setState({modalVisible});
-  };
-
-  handleUsernameChange = (username) => {
-    this.setState({username});
-  };
-
-  handlePasswordChange = (password) => {
-    this.setState({password});
-  };
-
-  handleSignInPress = async () => {
-    if (this.state.username.length === 0 || this.state.password.length === 0) {
+  const handleSignInPress = async () => {
+    if (username === null || password === null) {
       return false;
     }
 
-    if (
-      this.state.username !== this.data.username ||
-      this.state.password !== this.data.password
-    ) {
+    if (username !== data.username || password !== data.password) {
       return false;
     }
 
-    await _saveToken(true);
-
-    this.props.navigation.dispatch(StackActions.replace('Channels'));
+    signIn();
   };
 
-  render() {
-    return (
-      <View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={this.state.modalVisible}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={this.setModalVisible}>
-                <FontAwesome name="close" size={18} />
-              </TouchableOpacity>
-              <Text style={styles.title}>{this.props.titleModal}</Text>
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="User"
-                  value={this.state.username}
-                  onChangeText={this.handleUsernameChange}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Password"
-                  value={this.state.password}
-                  onChangeText={this.handlePasswordChange}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-              </View>
-              <TouchableOpacity
-                style={[styles.button, {backgroundColor: '#000000'}]}
-                onPress={this.handleSignInPress}>
-                <Text style={[styles.buttonTitle, {color: '#ffffff'}]}>
-                  {this.props.titleButton}
-                </Text>
-              </TouchableOpacity>
+  return (
+    <View>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setModalVisible(!modalVisible)}>
+              <FontAwesome name="close" size={18} />
+            </TouchableOpacity>
+            <Text style={styles.title}>{props.titleModal}</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="User"
+                value={username}
+                onChangeText={(username) => setUsername(username)}
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                value={password}
+                onChangeText={(password) => setPassword(password)}
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
             </View>
+            <TouchableOpacity
+              style={[styles.button, {backgroundColor: '#000000'}]}
+              onPress={() => handleSignInPress()}>
+              <Text style={[styles.buttonTitle, {color: '#ffffff'}]}>
+                {props.titleButton}
+              </Text>
+            </TouchableOpacity>
           </View>
-        </Modal>
+        </View>
+      </Modal>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            this.setModalVisible(true);
-          }}>
-          <Text style={styles.buttonTitle}>{this.props.titleButton}</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          setModalVisible(true);
+        }}>
+        <Text style={styles.buttonTitle}>{props.titleButton}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -171,3 +143,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
+
+export default ModalLogin;

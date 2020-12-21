@@ -1,8 +1,11 @@
 import React from 'react';
+import {AuthContext} from '../../config/Context';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const Menu = ({buttonFavourite, navigation}) => {
+  const {SignOut} = React.useContext(AuthContext);
+
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
@@ -28,6 +31,7 @@ const Menu = ({buttonFavourite, navigation}) => {
             name="sign-out"
             size={24}
             color="#ffffff"
+            onPress={() => SignOut()}
           />
         </TouchableOpacity>
       </View>
