@@ -8,6 +8,8 @@ target 'YoutubeProject' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'RealmJS', :path => '../node_modules/realm'
+
   target 'YoutubeProjectTests' do
     inherit! :complete
     # Pods for testing

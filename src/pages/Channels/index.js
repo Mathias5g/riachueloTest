@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
+import api from '../../services/api';
+import getRealm from '../../services/realm';
+
 import {
   View,
   TextInput,
@@ -10,52 +13,64 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Menu from '../../components/Menu';
 import Items from '../../components/Items';
 
-const DATA = [
-  {
-    id: '1',
-    image:
-      'https://exame.com/wp-content/uploads/2016/09/size_960_16_9_era-do-gelo.jpg',
-    url: 'http://',
-    title: 'Era do gelo',
-    favourite: false,
-  },
-  {
-    id: '2',
-    image:
-      'https://exame.com/wp-content/uploads/2016/09/size_960_16_9_era-do-gelo.jpg',
-    url: 'http://',
-    title: 'Era do gelo',
-    favourite: false,
-  },
-  {
-    id: '3',
-    image:
-      'https://exame.com/wp-content/uploads/2016/09/size_960_16_9_era-do-gelo.jpg',
-    url: 'http://',
-    title: 'Era do gelo',
-    favourite: false,
-  },
-];
-
 const Channels = ({navigation}) => {
+  const [inputSearch, setInputSearch] = useState(null);
+  const [channels, setChannels] = useState([]);
+
+  /*
+  const saveChannel = async (channel) => {
+    const data = {
+      channelId: channel.channelId,
+      channelTitle: channel.channelTitle,
+      thumbnails: data.thumbnails,
+    };
+
+    const realm = await getRealm();
+
+    realm.write(() => {
+      realm.create('Channel', data);
+    });
+  };*/
+
+  const handleSearchChannel = async () => {
+    try {
+      const response = await api.get(
+        `search?part=snippet&maxResults=10&q=${inputSearch}&type=video&key=AIzaSyBMopcHAjLrDrJXBiAh7V3eZ6EmgfSS_N8`,
+      );
+
+      await saveChannel(response.data.channelTitle);
+      setInputSearch(null);
+    } catch (error) {
+      console.tron.warn('erro');
+    }
+  };
+  /*
   const renderItem = ({item}) => (
     <Items title={item.title} favourite={item.favourite} />
-  );
+  );*/
 
   return (
     <View style={styles.container}>
       <Menu navigation={navigation} buttonFavourite={true} />
       <View style={styles.search}>
-        <TextInput style={styles.inputSearch} placeholder="Channels" />
-        <TouchableOpacity style={styles.buttonSearch}>
+        <TextInput
+          onChangeText={setInputSearch}
+          value={inputSearch}
+          style={styles.inputSearch}
+          placeholder="Channels"
+          autoCorrect={false}
+        />
+        <TouchableOpacity
+          style={styles.buttonSearch}
+          onPress={() => handleSearchChannel()}>
           <FontAwesomeIcon name="search" size={24} color="#ffffff" />
         </TouchableOpacity>
       </View>
-      <FlatList
+      {/*<FlatList
         data={DATA}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-      />
+      />*/}
     </View>
   );
 };
