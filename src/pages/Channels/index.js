@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import api from '../../services/api';
 import getRealm from '../../services/realm';
 
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   StyleSheet,
+  Text,
 } from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Menu from '../../components/Menu';
@@ -16,6 +17,8 @@ import Items from '../../components/Items';
 const Channels = ({navigation}) => {
   const [inputSearch, setInputSearch] = useState(null);
   const [channels, setChannels] = useState([]);
+  const [nextPageToken, setNextPageToken] = useState(null);
+  const [prevPageToken, setPrevPageToken] = useState(null);
 
   /*
   const saveChannel = async (channel) => {
@@ -35,19 +38,57 @@ const Channels = ({navigation}) => {
   const handleSearchChannel = async () => {
     try {
       const response = await api.get(
-        `search?part=snippet&maxResults=10&q=${inputSearch}&type=video&key=AIzaSyBMopcHAjLrDrJXBiAh7V3eZ6EmgfSS_N8`,
+        `search?part=snippet&maxResults=10&pageToken=CAoQAN&q=${inputSearch}&type=video&key=AIzaSyBMopcHAjLrDrJXBiAh7V3eZ6EmgfSS_N8`,
       );
 
-      await saveChannel(response.data.channelTitle);
+      /*setNextPageToken(response.data.nextPageToken);
+      setPrevPageToken(response.data.prevPageToken);*/
+
+      const channelsSearch = response.data.items.map((channel) => ({
+        channelId: channel.snippet.channelId,
+        thumbUrl: channel.snippet.thumbnails.default.url,
+        channelTitle: channel.snippet.channelTitle,
+      }));
+
+      setChannels(channelsSearch);
       setInputSearch(null);
     } catch (error) {
       console.tron.warn('erro');
     }
   };
-  /*
+
+  const nextPage = async () => {
+    try {
+      setChannels(null);
+
+      const response = await api.get(
+        `search?part=snippet&maxResults=10&pageToken=${nextPageToken}&q=${inputSearch}&type=video&key=AIzaSyBMopcHAjLrDrJXBiAh7V3eZ6EmgfSS_N8`,
+      );
+
+      setNextPageToken(response.data.nextPageToken);
+      setPrevPageToken(response.data.prevPageToken);
+
+      const channelsSearch = response.data.items.map((channel) => ({
+        channelId: channel.snippet.channelId,
+        thumbUrl: channel.snippet.thumbnails.default.url,
+        channelTitle: channel.snippet.channelTitle,
+      }));
+
+      setChannels(channelsSearch);
+      setInputSearch(null);
+    } catch (error) {
+      console.tron.warn('erro');
+    }
+  };
+  const prevPage = async () => {};
+
   const renderItem = ({item}) => (
-    <Items title={item.title} favourite={item.favourite} />
-  );*/
+    <Items
+      thumbnail={item.thumbUrl}
+      title={item.channelTitle}
+      favourite={item.favourite}
+    />
+  );
 
   return (
     <View style={styles.container}>
@@ -66,11 +107,17 @@ const Channels = ({navigation}) => {
           <FontAwesomeIcon name="search" size={24} color="#ffffff" />
         </TouchableOpacity>
       </View>
-      {/*<FlatList
-        data={DATA}
+      <FlatList
+        data={channels}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />*/}
+        keyExtractor={(item) => item.channelId}
+      />
+      <TouchableOpacity>
+        <Text>Anterior</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={nextPage}>
+        <Text>Próximo</Text>
+      </TouchableOpacity>
     </View>
   );
 };
