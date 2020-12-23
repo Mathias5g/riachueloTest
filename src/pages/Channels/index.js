@@ -41,8 +41,8 @@ const Channels = ({navigation}) => {
         `search?part=snippet&maxResults=10&pageToken=CAoQAN&q=${inputSearch}&type=video&key=AIzaSyBMopcHAjLrDrJXBiAh7V3eZ6EmgfSS_N8`,
       );
 
-      /*setNextPageToken(response.data.nextPageToken);
-      setPrevPageToken(response.data.prevPageToken);*/
+      setNextPageToken(response.data.nextPageToken);
+      setPrevPageToken(response.data.prevPageToken);
 
       const channelsSearch = response.data.items.map((channel) => ({
         channelId: channel.snippet.channelId,
