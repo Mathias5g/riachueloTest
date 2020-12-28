@@ -7,27 +7,41 @@ import {
   View,
   TextInput,
 } from 'react-native';
+import getRealm from '../../../services/realm';
+import {_saveUserData} from '../../../storage/UserData';
 import {AuthContext} from '../../../config/Context';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const ModalLogin = (props) => {
+const ModalSignUp = () => {
   const {signIn} = React.useContext(AuthContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
 
-  const data = {username: 'mathias', password: '123'};
+  //Função que cria o usuário ao clicar no botão
+  const handleSignUpPress = async () => {
+    const realm = await getRealm();
+    const getId = realm.objects('User').max('id');
 
-  const handleSignInPress = async () => {
-    if (username === null || password === null) {
-      return false;
+    const data = {
+      id: getId == null ? 1 : getId + 1,
+      username,
+      password,
+    };
+
+    try {
+      realm.write(() => {
+        realm.create('User', data);
+      });
+
+      setUsername(null);
+      setPassword(null);
+      _saveUserData(data.id, data.username);
+
+      signIn();
+    } catch (error) {
+      console.log(error);
     }
-
-    if (username !== data.username || password !== data.password) {
-      return false;
-    }
-
-    signIn();
   };
 
   return (
@@ -40,7 +54,7 @@ const ModalLogin = (props) => {
               onPress={() => setModalVisible(!modalVisible)}>
               <FontAwesome name="close" size={18} />
             </TouchableOpacity>
-            <Text style={styles.title}>{props.titleModal}</Text>
+            <Text style={styles.title}>Create new user</Text>
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
@@ -61,9 +75,9 @@ const ModalLogin = (props) => {
             </View>
             <TouchableOpacity
               style={[styles.button, {backgroundColor: '#000000'}]}
-              onPress={() => handleSignInPress()}>
+              onPress={() => handleSignUpPress()}>
               <Text style={[styles.buttonTitle, {color: '#ffffff'}]}>
-                {props.titleButton}
+                Sign Up
               </Text>
             </TouchableOpacity>
           </View>
@@ -75,7 +89,7 @@ const ModalLogin = (props) => {
         onPress={() => {
           setModalVisible(true);
         }}>
-        <Text style={styles.buttonTitle}>{props.titleButton}</Text>
+        <Text style={styles.buttonTitle}>Sign Up</Text>
       </TouchableOpacity>
     </View>
   );
@@ -144,4 +158,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalLogin;
+export default ModalSignUp;

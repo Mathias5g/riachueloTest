@@ -1,10 +1,17 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {AuthContext} from '../../config/Context';
+import {_getUserData} from '../../storage/UserData';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const Menu = ({buttonFavourite, navigation}) => {
   const {SignOut} = React.useContext(AuthContext);
+  const [usernameHeader, setUsernameHeader] = useState(null);
+
+  useEffect(() => {
+    const username = _getUserData().toString();
+    //setUsernameHeader(username);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -12,7 +19,7 @@ const Menu = ({buttonFavourite, navigation}) => {
         <View style={styles.iconContainer}>
           <FontAwesomeIcon name="user-circle-o" size={40} color="#000000" />
         </View>
-        <Text style={styles.username}>Username</Text>
+        <Text style={styles.username}>{usernameHeader}</Text>
       </View>
       <View style={styles.actionButtons}>
         {buttonFavourite && (

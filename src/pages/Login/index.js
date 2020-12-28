@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Image, Text, StyleSheet} from 'react-native';
-import ModalLogin from './ModalLogin';
+import ModalSignIn from './ModalSignIn';
+import ModalSignUp from './ModalSignUp';
 
 const Login = ({navigation}) => {
   return (
@@ -12,16 +13,8 @@ const Login = ({navigation}) => {
         <Text style={styles.title}>Welcome to the jungle</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <ModalLogin
-          titleModal="Welcome"
-          titleButton="Sign In"
-          navigation={navigation}
-        />
-        <ModalLogin
-          titleModal="Create new user"
-          titleButton="Sign Up"
-          navigation={navigation}
-        />
+        <ModalSignIn />
+        <ModalSignUp />
       </View>
     </View>
   );
