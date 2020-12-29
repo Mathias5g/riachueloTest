@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import api from '../../services/api';
-import getRealm from '../../services/realm';
 
 import {
   View,
@@ -9,6 +8,7 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  Keyboard,
 } from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Menu from '../../components/Menu';
@@ -26,19 +26,18 @@ const Channels = ({navigation}) => {
         `search?part=snippet&maxResults=10&pageToken=CAoQAN&q=${inputSearch}&type=video&key=AIzaSyBMopcHAjLrDrJXBiAh7V3eZ6EmgfSS_N8`,
       );
 
-      setNextPageToken(response.data.nextPageToken);
-      setPrevPageToken(response.data.prevPageToken);
-
       const channelsSearch = response.data.items.map((channel) => ({
         channelId: channel.snippet.channelId,
         thumbUrl: channel.snippet.thumbnails.default.url,
         channelTitle: channel.snippet.channelTitle,
       }));
 
+      setNextPageToken(response.data.nextPageToken);
       setChannels(channelsSearch);
       setInputSearch(null);
+      Keyboard.dismiss();
     } catch (error) {
-      console.tron.warn('erro');
+      console.tron.warn(error);
     }
   };
 
@@ -50,8 +49,26 @@ const Channels = ({navigation}) => {
         `search?part=snippet&maxResults=10&pageToken=${nextPageToken}&q=${inputSearch}&type=video&key=AIzaSyBMopcHAjLrDrJXBiAh7V3eZ6EmgfSS_N8`,
       );
 
+      const channelsSearch = response.data.items.map((channel) => ({
+        channelId: channel.snippet.channelId,
+        thumbUrl: channel.snippet.thumbnails.default.url,
+        channelTitle: channel.snippet.channelTitle,
+      }));
+
       setNextPageToken(response.data.nextPageToken);
       setPrevPageToken(response.data.prevPageToken);
+      setChannels(channelsSearch);
+    } catch (error) {
+      console.tron.warn(error);
+    }
+  };
+  const prevPage = async () => {
+    try {
+      setChannels(null);
+
+      const response = await api.get(
+        `search?part=snippet&maxResults=10&pageToken=${prevPageToken}&q=${inputSearch}&type=video&key=AIzaSyBMopcHAjLrDrJXBiAh7V3eZ6EmgfSS_N8`,
+      );
 
       const channelsSearch = response.data.items.map((channel) => ({
         channelId: channel.snippet.channelId,
@@ -59,20 +76,20 @@ const Channels = ({navigation}) => {
         channelTitle: channel.snippet.channelTitle,
       }));
 
+      setNextPageToken(response.data.nextPageToken);
+      setPrevPageToken(response.data.prevPageToken);
       setChannels(channelsSearch);
-      setInputSearch(null);
     } catch (error) {
-      console.tron.warn('erro');
+      console.tron.warn(error);
     }
   };
-  const prevPage = async () => {};
 
   const renderItem = ({item}) => (
     <Items
       id={item.channelId}
       thumbnail={item.thumbUrl}
       title={item.channelTitle}
-      favourite={item.favourite}
+      favourite={false}
     />
   );
 
@@ -98,12 +115,14 @@ const Channels = ({navigation}) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.channelId}
       />
-      <TouchableOpacity>
-        <Text>Anterior</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={nextPage}>
-        <Text>Próximo</Text>
-      </TouchableOpacity>
+      <View style={styles.containerButtonsPage}>
+        <TouchableOpacity onPress={prevPage} style={styles.buttonPage}>
+          <Text style={styles.textPage}>Anterior</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={nextPage} style={styles.buttonPage}>
+          <Text style={styles.textPage}>Próximo</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -149,6 +168,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
+  },
+  containerButtonsPage: {
+    height: 80,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonPage: {
+    width: 120,
+    height: 60,
+    backgroundColor: '#000000',
+    margin: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  textPage: {
+    color: '#ffffff',
   },
 });
 

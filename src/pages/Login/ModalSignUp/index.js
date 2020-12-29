@@ -8,7 +8,7 @@ import {
   TextInput,
 } from 'react-native';
 import getRealm from '../../../services/realm';
-import {_saveUserData} from '../../../storage/UserData';
+import {_saveUserData} from '../../../services/UserData';
 import {AuthContext} from '../../../config/Context';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 

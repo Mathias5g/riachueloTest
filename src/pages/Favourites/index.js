@@ -1,13 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  TextInput,
-  Text,
-  TouchableOpacity,
-  Image,
-  FlatList,
-  StyleSheet,
-} from 'react-native';
+import {View, Text, FlatList, StyleSheet} from 'react-native';
 import getRealm from '../../services/realm';
 import Menu from '../../components/Menu';
 import Items from '../../components/Items';
@@ -26,7 +18,12 @@ const Favourites = ({navigation}) => {
   }, []);
 
   const renderItem = ({item}) => (
-    <Items title={item.title} favourite={item.favourite} />
+    <Items
+      id={item.channelId}
+      thumbnail={item.thumbnails}
+      title={item.channelTitle}
+      favourite={item.favourite}
+    />
   );
 
   return (
@@ -38,7 +35,7 @@ const Favourites = ({navigation}) => {
       <FlatList
         data={favourites}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.channelId}
       />
     </View>
   );

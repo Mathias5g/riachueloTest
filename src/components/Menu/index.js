@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {AuthContext} from '../../config/Context';
-import {_getUserData} from '../../storage/UserData';
+import {_getUserData} from '../../services/UserData';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 

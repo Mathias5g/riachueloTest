@@ -1,28 +1,30 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import getRealm from '../../services/realm';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const Items = (props) => {
-  const [favourite, setFavourite] = useState(false);
-
   const handleFavourite = async () => {
     const data = {
-      id: Math.random() * (999999 - 1) + 1,
       channelId: props.id,
       channelTitle: props.title,
       thumbnails: props.thumbnail,
-      favourite: favourite,
+      favourite: !props.favourite,
     };
     try {
       const realm = await getRealm();
+      const findChannel = realm
+        .objects('Channel')
+        .filtered(`channelId = "${data.channelId}"`);
+
       realm.write(() => {
-        realm.create('Channel', data);
+        findChannel.length === 0
+          ? realm.create('Channel', data)
+          : realm.delete(findChannel[0]);
       });
     } catch (error) {
-      console.log(error);
+      console.tron.warn(error);
     }
-    props.favourite ? setFavourite(favourite) : setFavourite(!favourite);
   };
 
   return (
@@ -31,7 +33,7 @@ const Items = (props) => {
       <Text style={styles.itemTitle}>{props.title}</Text>
       <TouchableOpacity>
         <FontAwesomeIcon
-          name={favourite ? 'star' : 'star-o'}
+          name={props.favourite ? 'star' : 'star-o'}
           size={24}
           onPress={handleFavourite}
         />

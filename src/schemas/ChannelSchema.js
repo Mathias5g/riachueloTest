@@ -1,9 +1,8 @@
 export default class ChannelSchema {
   static schema = {
     name: 'Channel',
-    primaryKey: 'id',
+    primaryKey: 'channelId',
     properties: {
-      id: {type: 'int', indexed: true},
       channelId: 'string',
       channelTitle: 'string',
       thumbnails: 'string',

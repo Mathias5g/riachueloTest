@@ -6,7 +6,7 @@ import Loading from './components/Loading';
 import Login from './pages/Login';
 import Channels from './pages/Channels';
 import Favourites from './pages/Favourites';
-import {_getUserData, _deleteUserData} from './storage/UserData';
+import {_getUserData, _deleteUserData} from './services/UserData';
 
 const AuthStack = createStackNavigator();
 const AuthStackScreen = () => (
