@@ -8,6 +8,7 @@ import {
   TextInput,
 } from 'react-native';
 import {AuthContext} from '../../../config/Context';
+import {_saveUserData} from '../../../storage/UserData';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import getRealm from '../../../services/realm';
 
@@ -32,6 +33,7 @@ const ModalSignIn = () => {
       return false;
     }
 
+    _saveUserData(data[0].id, data[0].username, true);
     signIn();
   };
 

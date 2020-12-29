@@ -1,10 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet} from 'react-native';
 
 const Loading = () => {
   return (
     <View style={styles.container}>
-      <Text>Buscando...</Text>
+      <View style={styles.logoContainer}>
+        <Image source={require('../../assets/logo.png')} />
+      </View>
     </View>
   );
 };
@@ -13,7 +15,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000',
-    color: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoContainer: {
+    width: 80,
+    height: 80,
+    marginBottom: 30,
+    backgroundColor: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
   },
 });
 

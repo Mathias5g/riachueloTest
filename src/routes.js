@@ -6,6 +6,7 @@ import Loading from './components/Loading';
 import Login from './pages/Login';
 import Channels from './pages/Channels';
 import Favourites from './pages/Favourites';
+import {_getUserData, _deleteUserData} from './storage/UserData';
 
 const AuthStack = createStackNavigator();
 const AuthStackScreen = () => (
@@ -49,26 +50,31 @@ const RootStackScreen = ({userToken}) => (
 
 export default function Routes() {
   const [isLoading, setIsLoading] = useState(true);
-  const [userToken, setUserToken] = useState(null);
+  const [userToken, setUserToken] = useState(false);
 
   const authContext = useMemo(() => {
     return {
       signIn: () => {
         setIsLoading(false);
-        setUserToken('mathias');
+        setUserToken(true);
       },
       SignOut: () => {
         setIsLoading(false);
-        setUserToken(null);
+        setUserToken(false);
+        _deleteUserData();
       },
     };
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    fetchUser();
+    setTimeout(() => setIsLoading(false), 500);
   });
+
+  const fetchUser = async () => {
+    const {logado} = await _getUserData();
+    JSON.parse(logado) ? setUserToken(true) : setUserToken(false);
+  };
 
   if (isLoading) {
     return <Loading />;

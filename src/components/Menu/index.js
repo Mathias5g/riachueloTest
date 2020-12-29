@@ -9,9 +9,13 @@ const Menu = ({buttonFavourite, navigation}) => {
   const [usernameHeader, setUsernameHeader] = useState(null);
 
   useEffect(() => {
-    const username = _getUserData().toString();
-    //setUsernameHeader(username);
+    fetchUser();
   }, []);
+
+  const fetchUser = async () => {
+    const {username} = await _getUserData();
+    setUsernameHeader(JSON.parse(username));
+  };
 
   return (
     <View style={styles.container}>

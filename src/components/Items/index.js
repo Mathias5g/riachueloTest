@@ -1,15 +1,29 @@
 import React, {useState} from 'react';
 import {View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import getRealm from '../../services/realm';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const Items = (props) => {
   const [favourite, setFavourite] = useState(false);
 
-  const handleFavourite = () => {
+  const handleFavourite = async () => {
+    const data = {
+      id: Math.random() * (999999 - 1) + 1,
+      channelId: props.id,
+      channelTitle: props.title,
+      thumbnails: props.thumbnail,
+      favourite: favourite,
+    };
+    try {
+      const realm = await getRealm();
+      realm.write(() => {
+        realm.create('Channel', data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
     props.favourite ? setFavourite(favourite) : setFavourite(!favourite);
   };
-
-  console.log(props.thumbnail);
 
   return (
     <View style={styles.item}>

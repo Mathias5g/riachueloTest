@@ -36,7 +36,7 @@ const ModalSignUp = () => {
 
       setUsername(null);
       setPassword(null);
-      _saveUserData(data.id, data.username);
+      _saveUserData(data.id, data.username, true);
 
       signIn();
     } catch (error) {

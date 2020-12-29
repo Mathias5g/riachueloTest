@@ -20,21 +20,6 @@ const Channels = ({navigation}) => {
   const [nextPageToken, setNextPageToken] = useState(null);
   const [prevPageToken, setPrevPageToken] = useState(null);
 
-  /*
-  const saveChannel = async (channel) => {
-    const data = {
-      channelId: channel.channelId,
-      channelTitle: channel.channelTitle,
-      thumbnails: data.thumbnails,
-    };
-
-    const realm = await getRealm();
-
-    realm.write(() => {
-      realm.create('Channel', data);
-    });
-  };*/
-
   const handleSearchChannel = async () => {
     try {
       const response = await api.get(
@@ -84,6 +69,7 @@ const Channels = ({navigation}) => {
 
   const renderItem = ({item}) => (
     <Items
+      id={item.channelId}
       thumbnail={item.thumbUrl}
       title={item.channelTitle}
       favourite={item.favourite}

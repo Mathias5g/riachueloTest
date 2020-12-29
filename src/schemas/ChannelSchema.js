@@ -7,6 +7,7 @@ export default class ChannelSchema {
       channelId: 'string',
       channelTitle: 'string',
       thumbnails: 'string',
+      favourite: 'bool',
     },
   };
 }

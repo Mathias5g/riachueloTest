@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   TextInput,
@@ -8,37 +8,23 @@ import {
   FlatList,
   StyleSheet,
 } from 'react-native';
+import getRealm from '../../services/realm';
 import Menu from '../../components/Menu';
 import Items from '../../components/Items';
 
-const DATA = [
-  {
-    id: '1',
-    image:
-      'https://exame.com/wp-content/uploads/2016/09/size_960_16_9_era-do-gelo.jpg',
-    url: 'http://',
-    title: 'Era do gelo',
-    favourite: true,
-  },
-  {
-    id: '2',
-    image:
-      'https://exame.com/wp-content/uploads/2016/09/size_960_16_9_era-do-gelo.jpg',
-    url: 'http://',
-    title: 'Esqueceram e mim',
-    favourite: false,
-  },
-  {
-    id: '3',
-    image:
-      'https://exame.com/wp-content/uploads/2016/09/size_960_16_9_era-do-gelo.jpg',
-    url: 'http://',
-    title: 'Queen',
-    favourite: true,
-  },
-];
-
 const Favourites = ({navigation}) => {
+  const [favourites, setFavourites] = useState([]);
+
+  useEffect(() => {
+    async function loadChannels() {
+      const realm = await getRealm();
+      const channels = realm.objects('Channel');
+      setFavourites(channels);
+    }
+
+    loadChannels();
+  }, []);
+
   const renderItem = ({item}) => (
     <Items title={item.title} favourite={item.favourite} />
   );
@@ -50,7 +36,7 @@ const Favourites = ({navigation}) => {
         <Text style={styles.favoriteTitle}>My Favourites</Text>
       </View>
       <FlatList
-        data={DATA}
+        data={favourites}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
