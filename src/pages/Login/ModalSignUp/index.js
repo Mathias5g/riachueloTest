@@ -6,10 +6,11 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  Keyboard,
 } from 'react-native';
 import getRealm from '../../../services/realm';
 import {_saveUserData} from '../../../services/UserData';
-import {AuthContext} from '../../../config/Context';
+import AuthContext from '../../../config/Context';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const ModalSignUp = () => {
@@ -17,19 +18,32 @@ const ModalSignUp = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const [userError, setUserError] = useState(false);
+  const [messageError, setMessageError] = useState(null);
 
   //Função que cria o usuário ao clicar no botão
   const handleSignUpPress = async () => {
     const realm = await getRealm();
-    const getId = realm.objects('User').max('id');
+    const queryUser = realm.objects('User');
+    const userExists = queryUser.filtered(`username = "${username}"`);
+    const getId = queryUser.max('id');
+    Keyboard.dismiss();
 
-    const data = {
-      id: getId == null ? 1 : getId + 1,
-      username,
-      password,
-    };
+    if (username === null || password === null) {
+      return setMessageError('Username/Password cannot be empty');
+    }
+
+    if (userExists.length !== 0) {
+      setMessageError('User already exists');
+      return setUserError(true);
+    }
 
     try {
+      const data = {
+        id: getId == null ? 1 : getId + 1,
+        username,
+        password,
+      };
       realm.write(() => {
         realm.create('User', data);
       });
@@ -56,6 +70,7 @@ const ModalSignUp = () => {
             </TouchableOpacity>
             <Text style={styles.title}>Create new user</Text>
             <View style={styles.inputContainer}>
+              {userError && <Text style={styles.error}>{messageError}</Text>}
               <TextInput
                 style={styles.input}
                 placeholder="User"
@@ -133,6 +148,12 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: '90%',
+  },
+  error: {
+    fontSize: 18,
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 10,
   },
   input: {
     height: 40,

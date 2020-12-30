@@ -7,7 +7,7 @@ import {
   View,
   TextInput,
 } from 'react-native';
-import {AuthContext} from '../../../config/Context';
+import AuthContext from '../../../config/Context';
 import {_saveUserData} from '../../../services/UserData';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import getRealm from '../../../services/realm';
